@@ -12,7 +12,85 @@ struct node{
 
 typedef struct node node_t;
 
+/* Methods used to create a list */
+
 node_t* listEmpty();
+node_t* listCreate(data_t x);
+node_t* listAppend(node_t* l, data_t x);
+node_t* listPrepend(node_t* l, data_t x);
+void listReqAppend(node_t** l);
+void listReqPrepend(node_t** l);
+void listPrint(node_t* l);
+
+/* Other methods */
+
+data_t listLength(node_t* l);
+data_t* listToArray(node_t* l);
+data_t listSum(node_t* l);
+int listAndlist(node_t* l1, node_t* l2);
+void listConcat(node_t* l1, node_t* l2, node_t** concat);
+//data_t* listToString(node_t* l); ....working in progress
+
+/* Recursive methods */
+
+void listPrintRec(node_t* l);
+
+
+int main(void){
+
+
+	//Declaration and initialization of a new empty list
+	node_t* l1 = listEmpty();
+	node_t* l2 = listEmpty();
+
+	listReqAppend(&l1);
+	listReqAppend(&l2);
+
+	/*//Sum all the the nodes
+	printf("The sum of nodes: %d\n", listSum(list));*/
+
+	//Printing the length of the list
+	//printf("Length of the list: %d\n", listLength(list));
+
+	/*//List to string
+	printf("List to string: %s\n", listToString(list));*/
+
+	/*//List to array
+	printf("List to array: ");
+
+	size_t v_size = listLength(list);
+	int* v = listToArray(list);
+
+	for(size_t i = 0; i < v_size; i++){
+		printf("%d ", v[i]);
+	}*/
+
+	/*//Is the list palidrome? True = is palidrome false = is not
+	printf("The list is list is palidrome? ");
+	listIsPalidrome(list) ? printf("true") : printf("false");*/
+
+	//Is l1 included in l2?	
+	/*printf("The first list is included in the second list? ");
+	listAndlist(l1, l2) ? printf("true") : printf("false");*/
+
+	/*List concat*/
+	node_t* concat = listEmpty();
+	listConcat(l1, l2, &concat);
+
+	//free(v);
+
+	free(l1);
+	free(l2);
+	free(concat);
+
+	return 0;
+}
+
+/*Implementation of methods*/
+
+node_t* listEmpty(){
+	return NULL;
+}
 
 node_t* listCreate(data_t x){		
 
@@ -240,59 +318,4 @@ void listReqPrepend(node_t** l){
 	printf("\n\n");
 
 	return;
-}
-
-
-int main(void){
-
-
-	//Declaration and initialization of a new empty list
-	node_t* l1 = listEmpty();
-	node_t* l2 = listEmpty();
-
-	listReqAppend(&l1);
-	listReqAppend(&l2);
-
-	/*//Sum all the the nodes
-	printf("The sum of nodes: %d\n", listSum(list));*/
-
-	//Printing the length of the list
-	//printf("Length of the list: %d\n", listLength(list));
-
-	/*//List to string
-	printf("List to string: %s\n", listToString(list));*/
-
-	/*//List to array
-	printf("List to array: ");
-
-	size_t v_size = listLength(list);
-	int* v = listToArray(list);
-
-	for(size_t i = 0; i < v_size; i++){
-		printf("%d ", v[i]);
-	}*/
-
-	/*//Is the list palidrome? True = is palidrome false = is not
-	printf("The list is list is palidrome? ");
-	listIsPalidrome(list) ? printf("true") : printf("false");*/
-
-	//Is l1 included in l2?	
-	/*printf("The first list is included in the second list? ");
-	listAndlist(l1, l2) ? printf("true") : printf("false");*/
-
-	/*List concat*/
-	node_t* concat = listEmpty();
-	listConcat(l1, l2, &concat);
-
-	//free(v);
-
-	free(l1);
-	free(l2);
-	free(concat);
-
-	return 0;
-}
-
-node_t* listEmpty(){
-	return NULL;
 }
