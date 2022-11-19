@@ -12,9 +12,7 @@ struct node{
 
 typedef struct node node_t;
 
-node_t* listEmpty(){
-	return NULL;
-}
+node_t* listEmpty();
 
 node_t* listCreate(data_t x){		
 
@@ -293,4 +291,8 @@ int main(void){
 	free(concat);
 
 	return 0;
+}
+
+node_t* listEmpty(){
+	return NULL;
 }
