@@ -22,6 +22,7 @@ void listReqAppend(node_t** l);
 void listReqPrepend(node_t** l);
 void listPrint(node_t* l);
 
+
 /* Other methods */
 
 data_t listLength(node_t* l);
@@ -29,12 +30,17 @@ data_t* listToArray(node_t* l);
 data_t listSum(node_t* l);
 int listAndlist(node_t* l1, node_t* l2);
 void listConcat(node_t* l1, node_t* l2, node_t** concat);
-//data_t* listToString(node_t* l); ....working in progress
+void listInsertNode(node_t** l, int pos);			
+void listRemNode(node_t** l, int pos);	 
+/*data_t* listToString(node_t* l);*/	 //working in progress
 
 /* Recursive methods */
 
 void listPrintRec(node_t* l);
+data_t listSumRec(node_t* l);
 
+/*Screen messages method*/
+void emptyListError();
 
 int main(void){
 
@@ -43,45 +49,23 @@ int main(void){
 	node_t* l1 = listEmpty();
 	node_t* l2 = listEmpty();
 
+	int pos;
+
 	listReqAppend(&l1);
-	listReqAppend(&l2);
 
-	/*//Sum all the the nodes
-	printf("The sum of nodes: %d\n", listSum(list));*/
-
-	//Printing the length of the list
-	//printf("Length of the list: %d\n", listLength(list));
-
-	/*//List to string
-	printf("List to string: %s\n", listToString(list));*/
-
-	/*//List to array
-	printf("List to array: ");
-
-	size_t v_size = listLength(list);
-	int* v = listToArray(list);
-
-	for(size_t i = 0; i < v_size; i++){
-		printf("%d ", v[i]);
-	}*/
-
-	/*//Is the list palidrome? True = is palidrome false = is not
-	printf("The list is list is palidrome? ");
-	listIsPalidrome(list) ? printf("true") : printf("false");*/
-
-	//Is l1 included in l2?	
-	/*printf("The first list is included in the second list? ");
-	listAndlist(l1, l2) ? printf("true") : printf("false");*/
-
-	/*List concat*/
-	node_t* concat = listEmpty();
-	listConcat(l1, l2, &concat);
-
-	//free(v);
-
+	int i = 0;
+	int size = listLength(l1);
+	while(i < size){
+		printf("\nWhich node do you want to remove? ");
+		scanf("%d", &pos);
+		listRemNode(&l1, pos);
+		listPrint(l1);
+		printf("length of the list: %d", listLength(l1));
+		i++;
+	}
+	
 	free(l1);
 	free(l2);
-	free(concat);
 
 	return 0;
 }
@@ -158,7 +142,7 @@ data_t listLength(node_t* l){
 
 	while(l != NULL){
 		len++;
-		l = l -> next;
+		l = l->next;
 	}
 
 	return len;
@@ -167,7 +151,7 @@ data_t listLength(node_t* l){
 /*data_t* listToString(node_t* l){
 
 	if(l == NULL){
-		printf("The list is empty!");
+		emptyListError();
 		return 0;
 	}
 
@@ -187,7 +171,7 @@ data_t listLength(node_t* l){
 data_t* listToArray(node_t* l){
 
 	if(l == NULL){
-		printf("The list is empty!");
+		emptyListError();
 		return 0;
 	}
 
@@ -318,4 +302,96 @@ void listReqPrepend(node_t** l){
 	printf("\n\n");
 
 	return;
+}
+
+data_t listSumRec(node_t* l){
+
+	if(l == NULL){
+		return 0;
+	}
+	else{
+		return l->data + listSumRec(l->next);
+	}
+}
+
+void listInsertNode(node_t** l, int pos){
+
+	data_t x;
+	node_t* head = *l;
+
+	if(*l == NULL){
+		emptyListError();
+		return;
+	}
+	else if(listLength(*l) - 1 < pos){
+		printf("The position is greater than the length of the list, the node will be added at the end of the list\n");
+		printf("Insert the value to memorize in the node: ");
+		scanf("%d", &x);
+		*l = listAppend(*l, x);
+	}
+	else if(pos <= 0){
+		printf("The position is lesser than the length of the list, the node will be added at the start of the list\n");
+		printf("Insert the value to memorize in the node: ");
+		scanf("%d", &x);
+		*l = listPrepend(*l, x);
+
+		head = *l;
+	}
+	else{
+		for(int i = 0; i < pos - 1; i++){
+			*l = (*l)->next;
+		}
+
+		printf("Insert the value to memorize in the node: ");
+		scanf("%d", &x);
+
+		node_t* aux = listCreate(x);
+
+		aux->next = (*l)->next;
+		(*l)->next = aux;
+	}
+
+	printf("\nThe node has been added successfully: ");
+	listPrint(head);
+}
+
+void listRemNode(node_t** l, int pos){
+
+	if(*l == NULL){
+		emptyListError();
+	}
+	else if(pos <= 1){
+
+		//rimuovo la testa della lista
+
+		node_t* current_head = *l;
+		(*l) = (*l)->next;
+		current_head->next = NULL;
+	}
+	else if(pos >= listLength(*l)){
+
+		//rimuovo l'ultimo elemento
+
+		node_t* aux = *l;
+
+		for(int i = 0; i < listLength(*l) - 2; i++){
+		 	aux = aux->next;
+		}
+
+		aux->next = NULL;
+	}
+	else{
+
+		node_t* aux = *l;
+
+		for(int i = 0; i < pos - 2; i++){
+			aux = aux->next;
+		}
+
+		aux->next = aux->next->next;
+	}
+}
+
+void emptyListError(){
+	printf("The list is empty!");
 }
